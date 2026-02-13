@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samiksha 💖</title>
+
+<style>
+:root{
+  --pink:#ffe6f0;
+  --red:#e63946;
+}
+
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background:linear-gradient(135deg,#ffe6f0,#ffccd5);
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  overflow:hidden;
+  transition:0.6s;
+}
+
+/* Glow mode */
+body.music-mode{
+  background:linear-gradient(135deg,#ffd6e8,#ff8fab);
+}
+
+/* Floating hearts */
+.heart{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:var(--red);
+  animation:floatUp 6s linear infinite;
+  opacity:0.6;
+}
+@keyframes floatUp{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+
+/* Main card */
+.container{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.1);
+  max-width:90%;
+}
+
+/* Buttons */
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+  transition:transform 0.4s cubic-bezier(.17,.67,.83,.67), 
+             box-shadow 0.4s ease;
+}
+
+#yes{
+  background:var(--red);
+  color:white;
+  box-shadow:0 0 20px rgba(230,57,70,0.4);
+}
+
+#no{
+  background:#333;
+  color:white;
+  position:relative;
+  transition:transform 0.25s ease;
+}
+
+/* Overlay */
+#overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+  animation:fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* Envelope */
+.envelope{
+  width:200px;
+  height:140px;
+  background:#fff;
+  position:relative;
+  cursor:pointer;
+  border-radius:10px;
+  overflow:hidden;
+  animation:pop 0.5s ease;
+}
+
+.envelope::before{
+  content:"";
+  position:absolute;
+  top:0;
+  width:100%;
+  height:70px;
+  background:var(--red);
+  clip-path:polygon(0 0, 50% 100%, 100% 0);
+  transition:0.6s;
+}
+
+.envelope.open::before{
+  transform:rotateX(180deg);
+}
+
+/* Letter */
+.letterBox{
+  display:none;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  max-width:400px;
+  width:90%;
+  position:relative;
+  animation:pop 0.4s ease;
+  text-align:center;
+}
+
+@keyframes pop{
+  from{transform:scale(0.5);}
+  to{transform:scale(1);}
+}
+
+.closeBtn{
+  position:absolute;
+  top:10px;
+  right:15px;
+  cursor:pointer;
+  color:#999;
+  font-size:18px;
+}
+
+.playBtn{
+  margin-top:20px;
+  background:var(--red);
+  color:white;
+  padding:10px 20px;
+  border-radius:20px;
+  cursor:pointer;
+  display:inline-block;
+}
+
+/* Centered Cat */
+#cat{
+  display:none;
+  width:120px;
+  margin:20px auto 0 auto;
+}
+
+.bounce{
+  animation:bounce 0.6s infinite alternate;
+}
+
+@keyframes bounce{
+  from{transform:translateY(0);}
+  to{transform:translateY(-10px);}
+}
+
+/* Sparkles */
+.sparkle{
+  position:fixed;
+  width:5px;
+  height:5px;
+  background:white;
+  border-radius:50%;
+  animation:spark 1s linear forwards;
+}
+
+@keyframes spark{
+  from{opacity:1;transform:scale(1);}
+  to{opacity:0;transform:scale(3);}
+}
+
+@media(max-width:600px){
+  h1{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>💖 Samiksha 💖</h1>
+  <p><i>“My soul and your soul are forever tangled.”</i></p>
+  <h3>Will you be my Valentine?</h3>
+
+  <div class="buttons">
+    <button id="yes">YES 💕</button>
+    <button id="no">NO 😏</button>
+  </div>
+</div>
+
+<div id="overlay">
+  <div class="envelope" id="envelope"></div>
+
+  <div class="letterBox" id="letter">
+    <div class="closeBtn" onclick="closeAll()">✖</div>
+    <h2>💌 For You</h2>
+    <p> 
+My Dear
+
+I just wanted to tell you something small but very important… I really, really like you.
+
+You have this magic smile that can fix my worst days without even trying. Whenever I see your name pop up on my phone, my heart does this little happy jump. It’s actually funny how much power you have over my mood 😅
+
+Being around you feels easy and warm, like everything is just right. You make ordinary moments feel special, and I’m so grateful for that.
+
+Just remember — you’re appreciated, you’re cared for, and you mean a lot more to me than I probably say out loud.
+
+Stay cute, stay you.
+Yours always 💗✨    </p>
+
+    <div class="playBtn" onclick="playSong()">🎼Play the Song🎼</div>
+
+    <img id="cat" src="cat.gif" alt="Pixel Cat">
+  </div>
+</div>
+
+<audio id="loveSong" src="love.mp3"></audio>
+
+<script>
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const overlay=document.getElementById("overlay");
+const envelope=document.getElementById("envelope");
+const letter=document.getElementById("letter");
+const cat=document.getElementById("cat");
+const song=document.getElementById("loveSong");
+
+let attempts=0;
+let yesScale=1;
+
+/* Floating hearts */
+setInterval(()=>{
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.style.left=Math.random()*100+"vw";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+},400);
+
+/* Smooth YES growth */
+function growYes(){
+  if(yesScale < 2.5){
+    yesScale += 0.08;
+    yesBtn.style.transform = `scale(${yesScale})`;
+    yesBtn.style.boxShadow = `0 0 ${20 + yesScale*15}px rgba(230,57,70,0.6)`;
+  }
+}
+
+/* Chaos NO */
+function chaos(){
+  attempts++;
+  const x=(Math.random()-0.5)*300;
+  const y=(Math.random()-0.5)*200;
+  noBtn.style.transform=`translate(${x}px,${y}px) rotate(${Math.random()*360}deg)`;
+  growYes();
+
+  if(attempts>=6){
+    noBtn.innerText="Still YES 💖";
+    noBtn.onclick=openEnvelope;
+  }
+}
+
+noBtn.addEventListener("mouseenter",chaos);
+noBtn.addEventListener("touchstart",(e)=>{e.preventDefault();chaos();});
+
+/* YES click */
+yesBtn.addEventListener("click",openEnvelope);
+
+function openEnvelope(){
+  overlay.style.display="flex";
+}
+
+/* Envelope open */
+envelope.addEventListener("click",()=>{
+  envelope.classList.add("open");
+  setTimeout(()=>{
+    envelope.style.display="none";
+    letter.style.display="block";
+  },600);
+});
+
+/* Play song */
+function playSong(){
+  song.play();
+  document.body.classList.add("music-mode");
+  cat.style.display="block";
+  cat.classList.add("bounce");
+  sparkleEffect();
+}
+
+/* Sparkles */
+function sparkleEffect(){
+  for(let i=0;i<40;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+  }
+}
+
+/* Close */
+function closeAll(){
+  overlay.style.display="none";
+  letter.style.display="none";
+  envelope.style.display="block";
+  envelope.classList.remove("open");
+  song.pause();
+  song.currentTime=0;
+  document.body.classList.remove("music-mode");
+  cat.style.display="none";
+}
+</script>
+
+</body>
+</html>
